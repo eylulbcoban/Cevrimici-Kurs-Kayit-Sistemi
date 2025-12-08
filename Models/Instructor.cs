@@ -18,5 +18,8 @@ namespace Eylul_Webproje.Models
         public ApplicationUser User { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // Eğitmene ait kurslar
+        public List<Course> Courses { get; set; } = new();
     }
 }

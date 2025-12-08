@@ -1,0 +1,21 @@
+﻿@model Eylul_Webproje.Models.Course
+
+<h2>Kurs Detayı</h2>
+
+<p><strong>Başlık:</strong> @Model.Title</p>
+<p><strong>Kategori:</strong> @Model.Category</p>
+<p><strong>Açıklama:</strong> @Model.Description</p>
+<p><strong>Eğitmen:</strong> @Model.Instructor?.User?.Email</p>
+
+<h3>Modüller</h3>
+
+<ul>
+    @foreach (var mod in Model.Modules)
+    {
+        <li>@mod.Title</li>
+    }
+</ul>
+
+<p>
+    <a asp-action="Enroll" asp-route-id="@Model.Id">Bu Kursa Kaydol</a>
+</p>

@@ -114,6 +114,20 @@ namespace Eylul_Webproje.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
+
+                //  ROL BAZLI YÖNLENDİRME EKLENDİ 
+                var roles = await _userManager.GetRolesAsync(user);
+
+                if (roles.Contains("Admin"))
+                    return LocalRedirect("/Admin/Index");
+
+                if (roles.Contains("Instructor"))
+                    return LocalRedirect("/Instructor/Index");
+
+                if (roles.Contains("Student"))
+                    return LocalRedirect("/Student/Index");
+
+                // Varsayılan yönlendirme
                 return LocalRedirect(returnUrl);
             }
             if (result.RequiresTwoFactor)

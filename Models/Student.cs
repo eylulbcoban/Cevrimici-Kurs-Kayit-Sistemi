@@ -18,5 +18,7 @@ namespace Eylul_Webproje.Models
         public ApplicationUser User { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public List<Enrollment> Enrollments { get; set; } = new();
     }
 }

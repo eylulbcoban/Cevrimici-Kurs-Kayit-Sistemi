@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h2>Admin Dashboard</h2>
+
+<p>Toplam Kurs Sayısı: @ViewBag.TotalCourses</p>
+<p>Toplam Öğrenci Sayısı: @ViewBag.TotalStudents</p>
+<p>Toplam Eğitmen Sayısı: @ViewBag.TotalInstructors</p>
+
+<hr />
+
+<ul>
+    <li><a asp-action="Categories">Kategorileri Yönet</a></li>
+    <li><a asp-action="AllCourses">Tüm Kursları Görüntüle</a></li>
+    <li><a asp-action="Users">Kullanıcıları Yönet</a></li>
+</ul>

@@ -1,0 +1,13 @@
+﻿@model Eylul_Webproje.Models.Module
+
+<h2>Modül Ekle</h2>
+
+<form method="post">
+    <label>Modül Başlığı:</label><br />
+    <input asp-for="Title" /><br /><br />
+
+    <label>İçerik:</label><br />
+    <textarea asp-for="Content"></textarea><br /><br />
+
+    <button type="submit">Modül Ekle</button>
+</form>

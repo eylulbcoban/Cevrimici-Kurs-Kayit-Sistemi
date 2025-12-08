@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Student Paneli";
+}
+
+<h2>Öğrenci Dashboard</h2>
+
+<p>Kayıtlı olduğun kurs sayısı: @ViewBag.EnrolledCount</p>
+
+<hr />
+
+<ul>
+    <li><a asp-action="Courses">Tüm Kursları Gör</a></li>
+    <li><a asp-action="MyCourses">Kayıt Olduğum Kurslar</a></li>
+</ul>

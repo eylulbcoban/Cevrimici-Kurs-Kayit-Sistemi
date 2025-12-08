@@ -1,0 +1,16 @@
+﻿@model Eylul_Webproje.Models.ApplicationUser
+
+<h2>Kullanıcıya Rol Ata</h2>
+
+<p>Kullanıcı: @Model.Email</p>
+
+<form method="post">
+    <label>Rol:</label>
+    <select name="role">
+        <option value="Instructor">Instructor</option>
+        <option value="Student">Student</option>
+    </select>
+
+    <br /><br />
+    <button type="submit">Rolü Ata</button>
+</form>

@@ -1,0 +1,26 @@
+﻿@model List<Eylul_Webproje.Models.Enrollment>
+
+<h2>Kayıt Olduğum Kurslar</h2>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Kurs Adı</th>
+            <th>Kategori</th>
+            <th>Eğitmen</th>
+            <th>Kayıt Tarihi</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Course.Title</td>
+                <td>@e.Course.Category</td>
+                <td>@e.Course.Instructor?.User?.Email</td>
+                <td>@e.EnrollDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

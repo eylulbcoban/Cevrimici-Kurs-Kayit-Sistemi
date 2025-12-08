@@ -1,0 +1,28 @@
+﻿@model List<Eylul_Webproje.Models.Course>
+
+<h2>Tüm Kurslar</h2>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Kategori</th>
+            <th>Eğitmen</th>
+            <th>Detay</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>@course.Title</td>
+                <td>@course.Category</td>
+                <td>@course.Instructor?.User?.Email</td>
+                <td>
+                    <a asp-action="CourseDetail" asp-route-id="@course.Id">Görüntüle</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

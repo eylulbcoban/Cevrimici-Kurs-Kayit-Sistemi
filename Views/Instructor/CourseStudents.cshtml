@@ -1,0 +1,22 @@
+﻿@model List<Eylul_Webproje.Models.Enrollment>
+
+<h2>Kursa Kayıtlı Öğrenciler</h2>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Öğrenci Email</th>
+            <th>Kayıt Tarihi</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Student.User.Email</td>
+                <td>@item.EnrollDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

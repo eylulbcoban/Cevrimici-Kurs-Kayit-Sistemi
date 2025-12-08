@@ -1,0 +1,16 @@
+﻿@model Eylul_Webproje.Models.Course
+
+<h2>Yeni Kurs Oluştur</h2>
+
+<form method="post">
+    <label>Kurs Başlığı:</label><br />
+    <input asp-for="Title" /><br /><br />
+
+    <label>Açıklama:</label><br />
+    <textarea asp-for="Description"></textarea><br /><br />
+
+    <label>Kategori:</label><br />
+    <input asp-for="Category" /><br /><br />
+
+    <button type="submit">Kursu Oluştur</button>
+</form>
