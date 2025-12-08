@@ -1,28 +1,50 @@
 ﻿@model List<Eylul_Webproje.Models.Course>
 
-<h2>Tüm Kurslar</h2>
+@{
+    ViewData["Title"] = "Tüm Kurslar";
+}
 
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Başlık</th>
-            <th>Kategori</th>
-            <th>Eğitmen</th>
-            <th>Detay</th>
-        </tr>
-    </thead>
+<h2 class="text-light mb-4">Tüm Kurslar</h2>
 
-    <tbody>
-        @foreach (var course in Model)
-        {
-            <tr>
-                <td>@course.Title</td>
-                <td>@course.Category</td>
-                <td>@course.Instructor?.User?.Email</td>
-                <td>
-                    <a asp-action="CourseDetail" asp-route-id="@course.Id">Görüntüle</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card course-card shadow-lg">
+
+                <!-- Course Image -->
+                <img src="https://picsum.photos/600/400?random=@course.Id" class="course-img" />
+
+                <div class="card-body">
+                    <!-- Başlık -->
+                    <h4 class="card-title">@course.Title</h4>
+
+                    <!-- Açıklama -->
+                    <p class="course-description">@course.Description</p>
+
+                    <!-- Kategori -->
+                    <p class="course-category">@course.Category</p>
+
+                    <!-- Eğitmen Bilgisi -->
+                    <p class="text-info" style="font-size:14px;">
+                        <strong>Eğitmen:</strong> @course.Instructor?.User?.Email
+                    </p>
+
+                    <!-- Butonlar -->
+                    <div class="mt-3">
+                        <a asp-action="CourseDetail" asp-route-id="@course.Id"
+                           class="btn btn-outline-info btn-sm">
+                            Görüntüle
+                        </a>
+
+                        <a asp-action="Enroll" asp-route-id="@course.Id"
+                           class="btn btn-primary btn-sm ms-2">
+                            Kursa Katıl
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>

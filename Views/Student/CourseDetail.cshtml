@@ -1,21 +1,66 @@
 ﻿@model Eylul_Webproje.Models.Course
 
-<h2>Kurs Detayı</h2>
+@{
+    ViewData["Title"] = "Kurs Detayı";
+}
 
-<p><strong>Başlık:</strong> @Model.Title</p>
-<p><strong>Kategori:</strong> @Model.Category</p>
-<p><strong>Açıklama:</strong> @Model.Description</p>
-<p><strong>Eğitmen:</strong> @Model.Instructor?.User?.Email</p>
+<div class="container mt-4">
 
-<h3>Modüller</h3>
 
-<ul>
-    @foreach (var mod in Model.Modules)
+    <!-- Başlık -->
+    <h2 class="text-light">@Model.Title</h2>
+
+    <!-- Eğitmen Bilgisi -->
+    <p class="text-info" style="font-size:16px;">
+        <strong>Eğitmen:</strong> @Model.Instructor?.User?.Email
+    </p>
+
+    <!-- Kategori -->
+    <p class="course-category mb-3">
+        <strong>Kategori:</strong> @Model.Category
+    </p>
+
+    <!-- Açıklama -->
+    <p class="text-light mb-4" style="font-size:15px;">
+        @Model.Description
+    </p>
+
+    <!-- Butonlar -->
+    <div class="mb-4">
+        <a asp-action="Enroll" asp-route-id="@Model.Id"
+           class="btn btn-primary me-2">
+            Kursa Katıl
+        </a>
+
+        <a asp-action="Courses" class="btn btn-outline-info">
+            ← Geri Dön
+        </a>
+    </div>
+
+    <hr style="border-color: rgba(255,255,255,0.1);" />
+
+    <!-- Modüller -->
+    <h4 class="text-light mt-4 mb-3">Kurs Modülleri</h4>
+
+    @if (Model.Modules == null || !Model.Modules.Any())
     {
-        <li>@mod.Title</li>
+        <p class="text-secondary">Bu kursa henüz modül eklenmemiş.</p>
     }
-</ul>
+    else
+    {
+        <ul class="list-group">
+            @foreach (var module in Model.Modules)
+            {
+                <li class="list-group-item"
+                    style="background:rgba(255,255,255,0.05); color:white; border:none;">
+                    <strong>@module.Title</strong>
 
-<p>
-    <a asp-action="Enroll" asp-route-id="@Model.Id">Bu Kursa Kaydol</a>
-</p>
+                    <p class="text-secondary" style="margin:0; font-size:14px;">
+                        @module.Content
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+
+</div>

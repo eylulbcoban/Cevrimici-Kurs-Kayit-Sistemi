@@ -191,45 +191,77 @@ body {
         margin-left: 10px;
     }
 
+/* ---- Course Card ---- */
+
 .course-card {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255, 77, 77, 0.35);
     border-radius: 12px;
-    padding-bottom: 15px;
+    overflow: hidden;
     backdrop-filter: blur(6px);
-    transition: 0.25s ease;
+    transition: 0.3s ease-in-out;
+    height: auto; 
+    display: block; 
 }
 
+    /* Hover Glow */
     .course-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0px 10px 25px rgba(0,0,0,0.4);
+        box-shadow: 0px 0px 25px rgba(255, 77, 77, 0.45);
+        border-color: rgba(255, 77, 77, 0.7);
     }
 
+/* Card Image (sabit yükseklik) */
 .course-img {
+    width: 100%;
+    height: 200px; /* sabit boy */
+    object-fit: cover; /* fotoðraf taþmasýn */
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
-.card-title {
-    color: #ff4d4d;
+/* Ýç alan */
+.card-body {
+    padding: 12px 14px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Title */
+.course-card .card-title {
+    color: #ff6a6a;
+    font-size: 18px;
     font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Description & Category */
+.course-description {
+    color: #eee;
+    font-size: 14px;
+    margin-bottom: 6px;
+    /* Uzun açýklamalarda taþmayý engeller */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 3 satýr göster */
+    -webkit-box-orient: vertical;
 }
 
 .course-category {
-    color: #ccc;
-    font-size: 14px;
-    margin-top: -6px;
+    color: #cfcfcf;
+    font-size: 13px;
+    font-style: italic;
 }
 
-.btn-primary {
-    background-color: #ff4d4d !important;
-    border: none !important;
+/* Buttons area – aþaðý sabitleme */
+.course-buttons {
+    margin-top: auto;
+    display: flex;
+    gap: 10px;
 }
 
-    .btn-primary:hover {
-        background-color: #ff6a6a !important;
-    }
-
+/* Info button */
 .btn-outline-info {
     border-color: #4aa3ff;
     color: #4aa3ff;
@@ -238,4 +270,25 @@ body {
     .btn-outline-info:hover {
         background-color: #4aa3ff;
         color: #fff;
+    }
+
+/* Warning button */
+.btn-outline-warning {
+    border-color: #ffcc33;
+    color: #ffcc33;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #ffcc33;
+        color: #000;
+    }
+
+/* Primary (Kursa Katýl) button */
+.btn-primary {
+    background-color: #ff4d4d !important;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #ff6a6a !important;
     }
