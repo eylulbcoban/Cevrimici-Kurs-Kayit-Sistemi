@@ -23,11 +23,14 @@ namespace Eylul_Webproje.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
 
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
+            if (instructor == null) return RedirectToAction("MyCourses");
 
-            var courseCount = await _context.Courses.CountAsync(c => c.InstructorId == instructor.Id);
+            var courseCount = await _context.Courses
+                .CountAsync(c => c.InstructorId == instructor.Id);
 
             ViewBag.CourseCount = courseCount;
 
@@ -39,16 +42,33 @@ namespace Eylul_Webproje.Controllers
         public async Task<IActionResult> MyCourses()
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return View(new List<Course>());
 
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
+
+            // ❗ EĞER instructor kaydı yoksa OTOMATİK oluştur
+            if (instructor == null)
+            {
+                instructor = new Instructor
+                {
+                    UserId = user.Id,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Instructors.Add(instructor);
+                await _context.SaveChangesAsync();
+            }
 
             var courses = await _context.Courses
                 .Where(c => c.InstructorId == instructor.Id)
                 .ToListAsync();
 
-            return View(courses);
+            // Model NULL olamaz
+            return View(courses ?? new List<Course>());
         }
+
 
 
         // ------------------ CREATE COURSE ------------------
@@ -66,7 +86,10 @@ namespace Eylul_Webproje.Controllers
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
-            model.InstructorId = instructor.Id; // Eğitmen ilişkisi ekleniyor
+            if (instructor == null)
+                return RedirectToAction("MyCourses");
+
+            model.InstructorId = instructor.Id;
 
             _context.Courses.Add(model);
             await _context.SaveChangesAsync();
@@ -86,6 +109,9 @@ namespace Eylul_Webproje.Controllers
         [HttpPost]
         public async Task<IActionResult> AddModule(Module model)
         {
+            if (TempData["CourseId"] == null)
+                return RedirectToAction("MyCourses");
+
             model.CourseId = int.Parse(TempData["CourseId"].ToString());
 
             _context.Modules.Add(model);
@@ -104,7 +130,7 @@ namespace Eylul_Webproje.Controllers
                 .Where(e => e.CourseId == courseId)
                 .ToListAsync();
 
-            return View(students);
+            return View(students ?? new List<Enrollment>());
         }
     }
 }

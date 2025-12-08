@@ -1,29 +1,33 @@
 ﻿@model List<Eylul_Webproje.Models.Course>
 
-<h2>Kurslarım</h2>
+@{
+    ViewData["Title"] = "Kurslarım";
+}
 
-<p><a asp-action="CreateCourse">Yeni Kurs Ekle</a></p>
+<h2 class="text-light mb-4">Kurslarım</h2>
 
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Başlık</th>
-            <th>Kategori</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
+<a asp-action="CreateCourse" class="btn btn-danger mb-4">Yeni Kurs Ekle</a>
 
-    <tbody>
-        @foreach (var course in Model)
-        {
-            <tr>
-                <td>@course.Title</td>
-                <td>@course.Category</td>
-                <td>
-                    <a asp-action="AddModule" asp-route-courseId="@course.Id">Modül Ekle</a> |
-                    <a asp-action="CourseStudents" asp-route-courseId="@course.Id">Öğrencileri Gör</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card course-card shadow-lg">
+
+                <div class="card-body">
+                    <h4 class="card-title text-light">@course.Title</h4>
+                    <p class="card-text text-secondary">@course.Category</p>
+
+                    <div class="mt-3">
+                        <a asp-action="AddModule" asp-route-courseId="@course.Id"
+                           class="btn btn-outline-info btn-sm">Modül Ekle</a>
+
+                        <a asp-action="CourseStudents" asp-route-courseId="@course.Id"
+                           class="btn btn-outline-warning btn-sm ms-2">Öğrencileri Gör</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
