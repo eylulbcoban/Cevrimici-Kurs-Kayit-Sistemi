@@ -1,17 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Admin Paneli";
+    ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>Admin Dashboard</h2>
+<h2 class="admin-dashboard-title mb-4">Admin Dashboard</h2>
 
-<p>Toplam Kurs Sayısı: @ViewBag.TotalCourses</p>
-<p>Toplam Öğrenci Sayısı: @ViewBag.TotalStudents</p>
-<p>Toplam Eğitmen Sayısı: @ViewBag.TotalInstructors</p>
+<div class="row mb-5">
 
-<hr />
+    <!-- Toplam Kurs -->
+    <div class="col-md-4 mb-4">
+        <div class="admin-stat-card">
+            <h5>Toplam Kurs</h5>
+            <span class="stat-number">@ViewBag.CourseCount</span>
+        </div>
+    </div>
 
-<ul>
-    <li><a asp-action="Categories">Kategorileri Yönet</a></li>
-    <li><a asp-action="AllCourses">Tüm Kursları Görüntüle</a></li>
-    <li><a asp-action="Users">Kullanıcıları Yönet</a></li>
-</ul>
+    <!-- Toplam Öğrenci -->
+    <div class="col-md-4 mb-4">
+        <div class="admin-stat-card">
+            <h5>Toplam Öğrenci</h5>
+            <span class="stat-number">@ViewBag.StudentCount</span>
+        </div>
+    </div>
+
+    <!-- Toplam Eğitmen -->
+    <div class="col-md-4 mb-4">
+        <div class="admin-stat-card">
+            <h5>Toplam Eğitmen</h5>
+            <span class="stat-number">@ViewBag.InstructorCount</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- Yönetim Aksiyonları -->
+<div class="admin-actions">
+
+    <a asp-action="Categories" class="admin-action-card">
+        📂 Kategorileri Yönet
+    </a>
+
+    <a asp-action="AllCourses" class="admin-action-card">
+        📚 Tüm Kursları Görüntüle
+    </a>
+
+    <a asp-action="Users" class="admin-action-card">
+        👤 Kullanıcıları Yönet
+    </a>
+
+</div>

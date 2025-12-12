@@ -1,14 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Instructor Paneli";
+    ViewData["Title"] = "Eğitmen Paneli";
 }
 
-<h2>Eğitmen Dashboard</h2>
+<h2 class="page-title">Eğitmen Dashboard</h2>
 
-<p>Toplam Kurs Sayınız: @ViewBag.CourseCount</p>
+<div class="dashboard-card">
+    <p class="stat-text">
+        Toplam Kurs Sayınız:
+        <span class="stat-number">@ViewBag.CourseCount</span>
+    </p>
 
-<hr />
-
-<ul>
-    <li><a asp-action="MyCourses">Kurslarım</a></li>
-    <li><a asp-action="CreateCourse">Yeni Kurs Oluştur</a></li>
-</ul>
+    <div class="dashboard-links">
+        <a asp-action="MyCourses" class="dash-link">📚 Kurslarım</a>
+        <a asp-action="CreateCourse" class="dash-link">➕ Yeni Kurs Oluştur</a>
+    </div>
+</div>

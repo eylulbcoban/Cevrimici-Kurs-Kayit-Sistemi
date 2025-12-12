@@ -1,22 +1,32 @@
 ﻿@model List<Eylul_Webproje.Models.Enrollment>
 
-<h2>Kursa Kayıtlı Öğrenciler</h2>
+<h2 class="page-title">Kursa Kayıtlı Öğrenciler</h2>
 
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Öğrenci Email</th>
-            <th>Kayıt Tarihi</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Student.User.Email</td>
-                <td>@item.EnrollDate</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (!Model.Any())
+{
+    <div class="empty-box">
+        Henüz bu kursa kayıtlı öğrenci yok.
+    </div>
+}
+else
+{
+    <div class="glass-table">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Öğrenci Email</th>
+                    <th>Kayıt Tarihi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Student.User.Email</td>
+                        <td>@item.EnrollDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

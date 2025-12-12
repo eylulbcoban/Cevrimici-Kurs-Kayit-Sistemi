@@ -1,0 +1,76 @@
+﻿@model Eylul_Webproje.Models.Course
+
+@{
+    ViewData["Title"] = "Kurs Detayı";
+}
+
+<h2 class="text-danger mb-4">@Model.Title</h2>
+
+<div class="row">
+    <!-- SOL TARAF – KURS BİLGİLERİ -->
+    <div class="col-md-8">
+        <div class="course-card p-4 mb-4">
+
+            <!-- Görsel -->
+            <img src="https://picsum.photos/900/400?random=@Model.Id"
+                 class="course-img mb-4"
+                 alt="Kurs Görseli" />
+
+            <!-- Açıklama -->
+            <h5 class="text-light">Açıklama</h5>
+            <p class="course-description">
+                @Model.Description
+            </p>
+
+            <!-- Kategori -->
+            <p class="course-category">
+                <strong>Kategori:</strong> @Model.Category
+            </p>
+
+            <!-- Eğitmen -->
+            <p class="text-info">
+                <strong>Eğitmen:</strong> @Model.Instructor?.User?.Email
+            </p>
+        </div>
+    </div>
+
+    <!-- SAĞ TARAF – MODÜLLER -->
+    <div class="col-md-4">
+        <div class="course-card p-4">
+
+            <h5 class="text-warning mb-3">📚 Modüller</h5>
+
+            @if (Model.Modules != null && Model.Modules.Any())
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (var module in Model.Modules)
+                    {
+                        <li class="list-group-item bg-transparent text-light border-secondary">
+                            🔹 @module.Title
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Bu kursa henüz modül eklenmemiş.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ALT BUTONLAR -->
+<div class="mt-4">
+    <a asp-controller="Admin"
+       asp-action="CourseStudents"
+       asp-route-courseId="@Model.Id"
+       class="btn btn-outline-warning me-2">
+        Öğrencileri Gör
+    </a>
+
+    <a asp-controller="Admin"
+       asp-action="AllCourses"
+       class="btn btn-outline-info">
+        ← Tüm Kurslara Dön
+    </a>
+</div>

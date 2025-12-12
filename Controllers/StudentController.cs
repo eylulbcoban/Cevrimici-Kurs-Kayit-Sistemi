@@ -27,10 +27,30 @@ namespace Eylul_Webproje.Controllers
             var student = await _context.Students
                 .FirstOrDefaultAsync(s => s.UserId == user.Id);
 
-            var enrolledCount = await _context.Enrollments
-                .CountAsync(e => e.StudentId == student.Id);
+            // Kayıtlı kurslar
+            var enrollments = await _context.Enrollments
+                .Where(e => e.StudentId == student.Id)
+                .Include(e => e.Course)
+                    .ThenInclude(c => c.Modules)
+                .ToListAsync();
+
+            int enrolledCount = enrollments.Count;
+
+            // Toplam modül sayısı
+            int totalModules = enrollments
+                .Sum(e => e.Course.Modules.Count);
+
+            // 🟡 ŞİMDİLİK DEMO İLERLEME
+            // (ileride CompletedModule tablosu ile değişecek)
+            int completedModules = (int)(totalModules * 0.12);
+
+            double progressPercent = totalModules == 0
+                ? 0
+                : (completedModules * 100.0) / totalModules;
 
             ViewBag.EnrolledCount = enrolledCount;
+            ViewBag.WeeklyTarget = 20;
+            ViewBag.ProgressPercent = Math.Round(progressPercent);
 
             return View();
         }

@@ -1,13 +1,24 @@
 ﻿@model Eylul_Webproje.Models.Module
+@{
+    ViewData["Title"] = "Modül Ekle";
+}
 
-<h2>Modül Ekle</h2>
+<div class="form-card">
+    <h2>Modül Ekle</h2>
 
-<form method="post">
-    <label>Modül Başlığı:</label><br />
-    <input asp-for="Title" /><br /><br />
+    <form asp-action="AddModule" method="post">
 
-    <label>İçerik:</label><br />
-    <textarea asp-for="Content"></textarea><br /><br />
+        <label>Modül Başlığı</label>
+        <input asp-for="Title" placeholder="Örn: Giriş ve Kurulum" />
 
-    <button type="submit">Modül Ekle</button>
-</form>
+        <label>İçerik</label>
+        <textarea asp-for="Content" rows="4"
+                  placeholder="Modül içeriğini yazın"></textarea>
+
+        <button type="submit" class="btn-form w-100">
+            Modül Ekle
+        </button>
+    </form>
+
+    <a asp-action="MyCourses" class="back-link">← Kurslara Dön</a>
+</div>

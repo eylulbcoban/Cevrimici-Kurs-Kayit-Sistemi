@@ -1,0 +1,21 @@
+﻿@model List<Eylul_Webproje.Models.Enrollment>
+
+<h2 class="page-title">Kursa Kayıtlı Öğrenciler</h2>
+
+<div class="row">
+    @foreach (var enrollment in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="course-card p-3">
+                <h5 class="card-title text-light">
+                    @enrollment.Student.User.Email
+                </h5>
+
+                <p class="course-category">
+                    Kayıt Tarihi:
+                    @enrollment.EnrollDate.ToShortDateString()
+                </p>
+            </div>
+        </div>
+    }
+</div>

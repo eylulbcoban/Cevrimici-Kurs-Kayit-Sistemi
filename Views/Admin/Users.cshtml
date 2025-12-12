@@ -1,24 +1,32 @@
-﻿@model List<Eylul_Webproje.Models.ApplicationUser>
+﻿@model List<ApplicationUser>
 
-<h2>Kullanıcı Listesi</h2>
+<h2 class="admin-title">Kullanıcı Listesi</h2>
 
-<table border="1" cellpadding="5">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Rol Atama</th>
-        </tr>
-    </thead>
+<div class="admin-card">
 
-    <tbody>
-        @foreach (var user in Model)
-        {
+    <table class="admin-table">
+        <thead>
             <tr>
-                <td>@user.Email</td>
-                <td>
-                    <a asp-action="AssignRole" asp-route-id="@user.Id">Rol Ata</a>
-                </td>
+                <th>Email</th>
+                <th>Rol Atama</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+
+                    <td>
+                        <a asp-action="AssignRole" asp-route-id="@user.Id" class="assign-btn">
+                            Rol Ata
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

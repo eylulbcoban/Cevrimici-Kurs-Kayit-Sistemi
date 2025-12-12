@@ -1,14 +1,78 @@
-﻿@{
-    ViewData["Title"] = "Student Paneli";
-}
+﻿<h2 class="page-title">🎓 Öğrenci Dashboard</h2>
 
-<h2>Öğrenci Dashboard</h2>
+<div class="dashboard-grid">
 
-<p>Kayıtlı olduğun kurs sayısı: @ViewBag.EnrolledCount</p>
+    <!-- Kayıtlı Kurs -->
+    <div class="stat-card">
+        <h5>Kayıtlı Olduğun Kurs</h5>
+        <div class="stat-number">@ViewBag.EnrolledCount</div>
+    </div>
 
-<hr />
+    <!-- Hızlı Aksiyonlar -->
+    <div class="quick-actions">
+        <a asp-action="Courses" class="action-btn">
+            📚 Tüm Kurslar
+        </a>
+        <a asp-action="MyCourses" class="action-btn">
+            ✅ Kayıtlı Kurslarım
+        </a>
+    </div>
 
-<ul>
-    <li><a asp-action="Courses">Tüm Kursları Gör</a></li>
-    <li><a asp-action="MyCourses">Kayıt Olduğum Kurslar</a></li>
-</ul>
+    <!-- Haftalık Hedef Seçimi -->
+    <div class="goal-selector">
+        <span class="goal-title">🎯 Haftalık Hedefini Seç</span>
+        <div class="goal-buttons">
+            <button class="goal-btn" data-goal="10">%10</button>
+            <button class="goal-btn active" data-goal="20">%20</button>
+            <button class="goal-btn" data-goal="30">%30</button>
+        </div>
+    </div>
+
+    <!-- Haftalık Hedef Kartı -->
+    <div class="weekly-goal-card">
+        <div class="goal-header">
+            <h4>Haftalık Hedef</h4>
+            <span class="goal-badge">%10</span>
+        </div>
+
+        <p class="goal-text">
+            Bu hafta kayıtlı olduğun kursların
+            <strong>%10</strong>'unu tamamlamayı hedefliyorsun.
+        </p>
+
+        <div class="progress-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width:10%"></div>
+            </div>
+            <span class="progress-value">%10</span>
+        </div>
+
+        <span class="goal-footer">Haftalık ilerleme durumu</span>
+    </div>
+
+</div>
+
+<script>
+    document.querySelectorAll(".goal-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            // aktif butonu değiştir
+            document.querySelectorAll(".goal-btn")
+                .forEach(b => b.classList.remove("active"));
+
+            this.classList.add("active");
+
+            const goal = this.dataset.goal;
+
+            // badge değiştir
+            document.querySelector(".goal-badge").innerText = "%" + goal;
+
+            // metni değiştir
+            document.querySelector(".goal-text strong").innerText = "%" + goal;
+
+            // progress bar
+            document.querySelector(".progress-bar-fill").style.width = goal + "%";
+            document.querySelector(".progress-value").innerText = "%" + goal;
+        });
+    });
+</script>
