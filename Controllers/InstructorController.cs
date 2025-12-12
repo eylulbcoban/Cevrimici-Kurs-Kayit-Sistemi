@@ -19,26 +19,41 @@ namespace Eylul_Webproje.Controllers
             _userManager = userManager;
         }
 
-        // ------------------ DASHBOARD ------------------
+        // ================== DASHBOARD ==================
         public async Task<IActionResult> Index()
         {
+
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return RedirectToAction("Login", "Account");
+            if (user == null)
+                return RedirectToAction("Login", "Account");
 
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
-            if (instructor == null) return RedirectToAction("MyCourses");
 
-            var courseCount = await _context.Courses
-                .CountAsync(c => c.InstructorId == instructor.Id);
+            if (instructor == null)
+            {
+                instructor = new Instructor
+                {
+                    UserId = user.Id,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.Instructors.Add(instructor);
+                await _context.SaveChangesAsync();
+            }
 
-            ViewBag.CourseCount = courseCount;
+            var courses = await _context.Courses
+                .Include(c => c.Modules)
+                .Where(c => c.InstructorId == instructor.Id)
+                .ToListAsync();
+
+            ViewBag.CourseCount = courses.Count;
+            ViewBag.ModuleCount = courses.Sum(c => c.Modules.Count);
+            ViewBag.RecentCourses = courses.Take(3).ToList();
 
             return View();
         }
 
-
-        // ------------------ MY COURSES ------------------
+        // ================== MY COURSES ==================
         public async Task<IActionResult> MyCourses()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -48,30 +63,40 @@ namespace Eylul_Webproje.Controllers
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
-            // ❗ EĞER instructor kaydı yoksa OTOMATİK oluştur
             if (instructor == null)
-            {
-                instructor = new Instructor
-                {
-                    UserId = user.Id,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _context.Instructors.Add(instructor);
-                await _context.SaveChangesAsync();
-            }
+                return View(new List<Course>());
 
             var courses = await _context.Courses
                 .Where(c => c.InstructorId == instructor.Id)
                 .ToListAsync();
 
-            // Model NULL olamaz
-            return View(courses ?? new List<Course>());
+            return View(courses);
         }
 
+        // ------------------ STUDENTS OF COURSE ------------------
+        public async Task<IActionResult> CourseStudents(int courseId)
+        {
+            var user = await _userManager.GetUserAsync(User);
 
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
-        // ------------------ CREATE COURSE ------------------
+            if (instructor == null)
+                return RedirectToAction("MyCourses");
+
+            var students = await _context.Enrollments
+                .Include(e => e.Student)
+                .ThenInclude(s => s.User)
+                .Include(e => e.Course)
+                .Where(e =>
+                    e.CourseId == courseId &&
+                    e.Course.InstructorId == instructor.Id)
+                .ToListAsync();
+
+            return View(students);
+        }
+
+        // ================== CREATE COURSE ==================
         [HttpGet]
         public IActionResult CreateCourse()
         {
@@ -82,6 +107,8 @@ namespace Eylul_Webproje.Controllers
         public async Task<IActionResult> CreateCourse(Course model)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
 
             var instructor = await _context.Instructors
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
@@ -89,6 +116,7 @@ namespace Eylul_Webproje.Controllers
             if (instructor == null)
                 return RedirectToAction("MyCourses");
 
+            // ❗ Course.CreatedAt YOK → HİÇ dokunmuyoruz
             model.InstructorId = instructor.Id;
 
             _context.Courses.Add(model);
@@ -97,22 +125,18 @@ namespace Eylul_Webproje.Controllers
             return RedirectToAction("MyCourses");
         }
 
-
-        // ------------------ ADD MODULE ------------------
+        // ================== ADD MODULE ==================
         [HttpGet]
         public IActionResult AddModule(int courseId)
         {
-            TempData["CourseId"] = courseId;
+            ViewBag.CourseId = courseId;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddModule(Module model)
+        public async Task<IActionResult> AddModule(Module model, int courseId)
         {
-            if (TempData["CourseId"] == null)
-                return RedirectToAction("MyCourses");
-
-            model.CourseId = int.Parse(TempData["CourseId"].ToString());
+            model.CourseId = courseId;
 
             _context.Modules.Add(model);
             await _context.SaveChangesAsync();
@@ -120,17 +144,6 @@ namespace Eylul_Webproje.Controllers
             return RedirectToAction("MyCourses");
         }
 
-
-        // ------------------ STUDENTS OF COURSE ------------------
-        public async Task<IActionResult> CourseStudents(int courseId)
-        {
-            var students = await _context.Enrollments
-                .Include(e => e.Student)
-                .ThenInclude(s => s.User)
-                .Where(e => e.CourseId == courseId)
-                .ToListAsync();
-
-            return View(students ?? new List<Enrollment>());
-        }
+        
     }
 }

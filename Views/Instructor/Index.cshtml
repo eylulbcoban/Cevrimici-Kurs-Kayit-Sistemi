@@ -1,17 +1,66 @@
-﻿@{
-    ViewData["Title"] = "Eğitmen Paneli";
-}
+﻿<h2 class="page-title">👨‍🏫 Eğitmen Paneli</h2>
 
-<h2 class="page-title">Eğitmen Dashboard</h2>
+<div class="row g-4 mb-4">
 
-<div class="dashboard-card">
-    <p class="stat-text">
-        Toplam Kurs Sayınız:
-        <span class="stat-number">@ViewBag.CourseCount</span>
-    </p>
-
-    <div class="dashboard-links">
-        <a asp-action="MyCourses" class="dash-link">📚 Kurslarım</a>
-        <a asp-action="CreateCourse" class="dash-link">➕ Yeni Kurs Oluştur</a>
+    <div class="col-md-6">
+        <div class="admin-stat-card">
+            <h5>Toplam Kurs</h5>
+            <div class="stat-number">@ViewBag.CourseCount</div>
+        </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="admin-stat-card">
+            <h5>Toplam Modül</h5>
+            <div class="stat-number">@ViewBag.ModuleCount</div>
+        </div>
+    </div>
+
 </div>
+
+<h4 class="section-title">📌 Son Eklenen Kurslar</h4>
+
+@if (((List<Course>)ViewBag.RecentCourses).Any())
+{
+    <div class="row">
+        @foreach (var course in ViewBag.RecentCourses)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+
+                    <img src="https://picsum.photos/600/400?random=@course.Id"
+                         class="course-img" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@course.Title</h5>
+                        <p class="course-description">@course.Description</p>
+                        <p class="course-category">@course.Category</p>
+
+                        <div class="course-buttons">
+                            <a asp-action="AddModule"
+                               asp-route-courseId="@course.Id"
+                               class="btn btn-outline-info btn-sm">
+                                ➕ Modül Ekle
+                            </a>
+                        </div>
+                        <a asp-action="CourseStudents"
+                           asp-route-courseId="@course.Id"
+                           class="btn btn-outline-warning btn-sm">
+                            👥 Öğrencileri Gör
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <p>📭 Henüz kurs eklemedin</p>
+        <a asp-action="CreateCourse" class="btn btn-primary">
+            İlk Kursunu Oluştur
+        </a>
+    </div>
+}

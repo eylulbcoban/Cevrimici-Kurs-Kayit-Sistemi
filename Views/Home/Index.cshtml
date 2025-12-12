@@ -1,8 +1,58 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<Course>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2 class="page-title">📚 Tüm Kurslar</h2>
+
+<form method="get" class="search-bar">
+    <input type="text"
+           name="search"
+           value="@ViewBag.Search"
+           class="search-input"
+           placeholder="Kurs ara (Arduino, Android, Web...)" />
+
+    <button type="submit" class="search-btn">
+        🔍 Ara
+    </button>
+</form>
+
+@if (Model == null || !Model.Any())
+{
+    <p class="text-muted mt-4">Kurs bulunamadı.</p>
+}
+else
+{
+    <div class="row mt-4">
+        @foreach (var course in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+
+                    <img src="https://picsum.photos/600/400?random=@course.Id"
+                         class="course-img" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@course.Title</h5>
+
+                        <p class="course-description">
+                            @course.Description
+                        </p>
+
+                        <p class="course-category">
+                            @course.Category
+                        </p>
+
+                        <p class="course-instructor">
+                            👨‍🏫 @course.Instructor?.User?.UserName
+                        </p>
+
+                        <a asp-area="Identity"
+                           asp-page="/Account/Login"
+                           class="btn btn-primary btn-sm w-100 mt-2">
+                            Giriş Yap & Katıl
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
