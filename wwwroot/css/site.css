@@ -936,3 +936,46 @@ body {
         background: #ff6a6a;
         transform: translateY(-2px);
     }
+
+/* =========================================================
+   COURSE CARD BUTTON FIX (VIEW + ENROLL)
+========================================================= */
+
+/* Buton kapsayýcýsýný düzenle */
+.course-card .card-body > div.mt-3 {
+    display: flex; /* yan yana */
+    gap: 10px; /* aralýk */
+}
+
+/* Tüm kurs kartý butonlarý */
+.course-card .card-body a.btn {
+    flex: 1; /* eþit geniþlik */
+    height: 44px; /* ayný yükseklik */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* Küçük buton override (btn-sm sorun çýkarýyordu) */
+.course-card .btn-sm {
+    padding: 0; /* flex ile kontrol ediliyor */
+    font-size: 14px;
+}
+
+/* Görüntüle butonu */
+.course-card .btn-outline-info {
+    border-width: 1.5px;
+}
+
+/* Kursa Katýl butonu */
+.course-card .btn-primary {
+    box-shadow: 0 0 12px rgba(255,77,77,0.35);
+}
+
+/* Hover efektleri */
+.course-card .btn:hover {
+    transform: translateY(-2px);
+}
