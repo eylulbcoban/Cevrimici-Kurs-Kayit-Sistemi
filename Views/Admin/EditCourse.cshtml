@@ -1,0 +1,61 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Kurs Düzenle";
+}
+
+<h2 class="page-title">✏️ Kurs Düzenle</h2>
+
+<div class="form-card">
+
+    <form asp-action="EditCourse" method="post">
+
+        <!-- ID gizli alan -->
+        <input type="hidden" asp-for="Id" />
+
+        <!-- Kurs Adı -->
+        <label>Kurs Adı</label>
+        <input asp-for="Title" class="input-box" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+
+        <!-- Açıklama -->
+        <label>Açıklama</label>
+        <textarea asp-for="Description" rows="4" class="input-box"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+
+        <!-- Kategori -->
+        <label>Kategori</label>
+        <select asp-for="Category"
+                class="input-box"
+                asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+            <option value="">Kategori Seç</option>
+        </select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+
+        <!-- Eğitmen -->
+        <label>Eğitmen</label>
+        <select asp-for="InstructorId"
+                class="input-box"
+                asp-items="@(new SelectList(ViewBag.Instructors, "Id", "User.Email"))">
+            <option value="">Eğitmen Seç</option>
+        </select>
+        <span asp-validation-for="InstructorId" class="text-danger"></span>
+
+        <!-- Butonlar -->
+        <div class="mt-4 d-flex gap-3">
+            <button type="submit" class="btn-form">
+                💾 Kaydet
+            </button>
+
+            <a asp-action="AllCourses" class="back-link">
+                ↩ Geri Dön
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

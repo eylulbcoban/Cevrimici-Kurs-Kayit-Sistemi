@@ -1,19 +1,19 @@
-﻿using System.Reflection;
+﻿using Eylul_Webproje.Models;
 
-namespace Eylul_Webproje.Models
+public class Course
 {
-    public class Course
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
 
-        // Instructor profile FK (int!)
-        public int InstructorId { get; set; }
-        public Instructor Instructor { get; set; }
+    
+    public String Category { get; set; }
+    
 
-        public List<Module> Modules { get; set; } = new();
-    }
+    //  EĞİTMEN FK
+    public int InstructorId { get; set; }
+    public Instructor Instructor { get; set; }
+
+    public List<Module> Modules { get; set; } = new();
 }

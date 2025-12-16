@@ -2,10 +2,14 @@
 
 <h2>Kategori Düzenle</h2>
 
-<form method="post">
-    <label>Kategori Adı:</label>
-    <input asp-for="Name" />
-    <br /><br />
+<form asp-action="EditCategory" method="post">
+    <input type="hidden" asp-for="Id" />
 
-    <button type="submit">Güncelle</button>
+    <div class="mb-3">
+        <label>Kategori Adı</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <button class="btn btn-warning">Güncelle</button>
+    <a asp-action="Categories" class="btn btn-secondary">Geri</a>
 </form>

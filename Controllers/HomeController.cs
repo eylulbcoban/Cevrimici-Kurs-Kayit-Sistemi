@@ -32,7 +32,7 @@ namespace Eylul_Webproje.Controllers
             {
                 coursesQuery = coursesQuery.Where(c =>
                     c.Title.Contains(search) ||
-                    c.Category.Contains(search));
+                    c.Category != null && c.Category.Contains(search));
             }
 
             var courses = await coursesQuery.ToListAsync();

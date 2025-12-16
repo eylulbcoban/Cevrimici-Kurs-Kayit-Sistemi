@@ -33,7 +33,7 @@ namespace Eylul_Webproje.Controllers
             return View();
         }
 
-        // ================= CATEGORIES =================
+        // ================= CATEGORIES (CRUD) =================
         public async Task<IActionResult> Categories()
         {
             return View(await _context.Categories.ToListAsync());
@@ -86,7 +86,7 @@ namespace Eylul_Webproje.Controllers
             return RedirectToAction(nameof(Categories));
         }
 
-        // ================= COURSES =================
+        // ================= COURSES (CRUD) =================
         public async Task<IActionResult> AllCourses()
         {
             var courses = await _context.Courses
@@ -97,7 +97,36 @@ namespace Eylul_Webproje.Controllers
             return View(courses);
         }
 
-        // 👉 ADMIN COURSE DETAIL
+        // CREATE COURSE
+        [HttpGet]
+        public IActionResult CreateCourse()
+        {
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Instructors = _context.Instructors
+                .Include(i => i.User)
+                .ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCourse(Course model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = _context.Categories.ToList();
+                ViewBag.Instructors = _context.Instructors
+                    .Include(i => i.User)
+                    .ToList();
+                return View(model);
+            }
+
+            _context.Courses.Add(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AllCourses));
+        }
+
+        // READ COURSE
         public async Task<IActionResult> CourseDetail(int id)
         {
             var course = await _context.Courses
@@ -112,7 +141,52 @@ namespace Eylul_Webproje.Controllers
             return View(course);
         }
 
-        // 👉 ADMIN COURSE STUDENTS
+        // UPDATE COURSE
+        [HttpGet]
+        public async Task<IActionResult> EditCourse(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null) return NotFound();
+
+            ViewBag.Categories = _context.Categories.ToList();
+            ViewBag.Instructors = _context.Instructors
+                .Include(i => i.User)
+                .ToList();
+
+            return View(course);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCourse(Course model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = _context.Categories.ToList();
+                ViewBag.Instructors = _context.Instructors
+                    .Include(i => i.User)
+                    .ToList();
+                return View(model);
+            }
+
+            _context.Courses.Update(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(AllCourses));
+        }
+
+        // DELETE COURSE
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course != null)
+            {
+                _context.Courses.Remove(course);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(AllCourses));
+        }
+
+        // ================= COURSE STUDENTS =================
         public async Task<IActionResult> CourseStudents(int courseId)
         {
             var students = await _context.Enrollments
@@ -148,11 +222,8 @@ namespace Eylul_Webproje.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
 
-            // 🔥 Eski roller silinsin
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-            // 🔥 Yeni rol eklensin
             await _userManager.AddToRoleAsync(user, role);
 
             return RedirectToAction(nameof(Users));

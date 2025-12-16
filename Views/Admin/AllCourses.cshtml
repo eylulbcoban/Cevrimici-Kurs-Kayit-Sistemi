@@ -1,6 +1,12 @@
-﻿@model List<Eylul_Webproje.Models.Course>
+﻿@using Eylul_Webproje.Models
+@model List<Course>
 
-<h2 class="admin-title mb-4">Tüm Kurslar</h2>
+<h2 class="admin-title mb-4">📚 Tüm Kurslar</h2>
+
+<!-- CREATE -->
+<a asp-action="CreateCourse" class="btn btn-primary mb-4">
+    ➕ Yeni Kurs Oluştur
+</a>
 
 <div class="row">
     @foreach (var course in Model)
@@ -9,12 +15,15 @@
             <div class="admin-course-card">
 
                 <!-- Dinamik Fotoğraf -->
-                <img src="https://picsum.photos/600/400?random=@course.Id" class="admin-course-img" />
+                <img src="https://picsum.photos/600/400?random=@course.Id"
+                     class="admin-course-img" />
 
                 <div class="admin-course-body">
                     <h4 class="course-title">@course.Title</h4>
 
-                    <p class="course-description">@course.Description</p>
+                    <p class="course-description">
+                        @course.Description
+                    </p>
 
                     <p class="course-category">
                         <strong>Kategori:</strong> @course.Category
@@ -24,13 +33,40 @@
                         <strong>Eğitmen:</strong> @course.Instructor?.User?.Email
                     </p>
 
-                    <div class="mt-3">
-                        <a asp-action="CourseDetail" asp-route-id="@course.Id"
-                           class="btn btn-outline-info btn-sm">Detay</a>
+                    <!-- CRUD BUTTONS -->
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
 
+                        <!-- READ -->
+                        <a asp-action="CourseDetail"
+                           asp-route-id="@course.Id"
+                           class="btn btn-outline-info btn-sm w-100">
+                            👁 Detay
+                        </a>
+
+                        <!-- UPDATE -->
+                        <a asp-action="EditCourse"
+                           asp-route-id="@course.Id"
+                           class="btn btn-outline-warning btn-sm w-100">
+                            ✏️ Düzenle
+                        </a>
+
+                        <!-- DELETE -->
+                        <a asp-action="DeleteCourse"
+                           asp-route-id="@course.Id"
+                           class="btn btn-outline-danger btn-sm w-100"
+                           onclick="return confirm('Bu kurs silinsin mi?')">
+                            🗑 Sil
+                        </a>
+
+                        <!-- RELATION (Students) -->
+                        <a asp-action="CourseStudents"
+                           asp-route-courseId="@course.Id"
+                           class="btn btn-outline-secondary btn-sm w-100">
+                            👥 Öğrenciler
+                        </a>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     }
