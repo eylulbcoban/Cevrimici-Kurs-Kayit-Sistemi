@@ -3,10 +3,6 @@
 
 <h2 class="admin-title mb-4">📚 Tüm Kurslar</h2>
 
-<!-- CREATE -->
-<a asp-action="CreateCourse" class="btn btn-primary mb-4">
-    ➕ Yeni Kurs Oluştur
-</a>
 
 <div class="row">
     @foreach (var course in Model)
@@ -58,12 +54,7 @@
                             🗑 Sil
                         </a>
 
-                        <!-- RELATION (Students) -->
-                        <a asp-action="CourseStudents"
-                           asp-route-courseId="@course.Id"
-                           class="btn btn-outline-secondary btn-sm w-100">
-                            👥 Öğrenciler
-                        </a>
+                        
                     </div>
 
                 </div>
