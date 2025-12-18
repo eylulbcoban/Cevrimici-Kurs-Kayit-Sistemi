@@ -2,16 +2,41 @@
 
 <h2 class="page-title">📚 Tüm Kurslar</h2>
 
-<form method="get" class="search-bar">
+<!--  FİLTRE ALANI -->
+<form method="get" class="search-bar mb-4">
+
     <input type="text"
            name="search"
            value="@ViewBag.Search"
            class="search-input"
-           placeholder="Kurs ara (Arduino, Android, Web...)" />
+           placeholder="Kurs ara..." />
+
+    <select name="category" class="search-input">
+        <option value="">Tüm Kategoriler</option>
+        @foreach (var cat in ViewBag.Categories as List<string>)
+        {
+            <option value="@cat"
+                    selected="@(cat == ViewBag.SelectedCategory)">
+                @cat
+            </option>
+        }
+    </select>
+
+    <select name="instructor" class="search-input">
+        <option value="">Tüm Eğitmenler</option>
+        @foreach (var inst in ViewBag.Instructors as List<string>)
+        {
+            <option value="@inst"
+                    selected="@(inst == ViewBag.SelectedInstructor)">
+                @inst
+            </option>
+        }
+    </select>
 
     <button type="submit" class="search-btn">
-        🔍 Ara
+        🔍 Filtrele
     </button>
+
 </form>
 
 @if (Model == null || !Model.Any())

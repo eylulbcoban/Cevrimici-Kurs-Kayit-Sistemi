@@ -27,9 +27,43 @@ namespace Eylul_Webproje.Controllers
         // ================= DASHBOARD =================
         public async Task<IActionResult> Index()
         {
+            // Temel istatistikler
             ViewBag.CourseCount = await _context.Courses.CountAsync();
             ViewBag.StudentCount = await _context.Students.CountAsync();
             ViewBag.InstructorCount = await _context.Instructors.CountAsync();
+
+            // 📊 En çok kayıt alan kurslar
+            ViewBag.TopCourses = await _context.Enrollments
+                .GroupBy(e => e.Course.Title)
+                .Select(g => new
+                {
+                    CourseTitle = g.Key,
+                    StudentCount = g.Count()
+                })
+                .OrderByDescending(x => x.StudentCount)
+                .Take(5)
+                .ToListAsync();
+
+            // 📈 Kategoriye göre kurs sayısı
+            ViewBag.CategoryStats = await _context.Courses
+                .GroupBy(c => c.Category)
+                .Select(g => new
+                {
+                    CategoryName = g.Key,
+                    CourseCount = g.Count()
+                })
+                .ToListAsync();
+
+            // 👥 Eğitmen başına öğrenci sayısı
+            ViewBag.InstructorStats = await _context.Enrollments
+                .GroupBy(e => e.Course.Instructor.User.Email)
+                .Select(g => new
+                {
+                    InstructorEmail = g.Key,
+                    StudentCount = g.Count()
+                })
+                .ToListAsync();
+
             return View();
         }
 

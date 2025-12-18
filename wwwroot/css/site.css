@@ -979,3 +979,79 @@ body {
 .course-card .btn:hover {
     transform: translateY(-2px);
 }
+
+.search-bar {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 14px;
+    max-width: 100%;
+}
+
+.search-input {
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+    .search-input option {
+        background: #1a1c3a;
+        color: #fff;
+    }
+
+@media (max-width: 768px) {
+    .search-bar {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   ADMIN DASHBOARD CHARTS
+========================= */
+
+/* Grafik kartlarýnýn genel yapýsý */
+.admin-glass-card {
+    padding: 24px;
+    min-height: 420px; /*  kart yüksekliði */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+    /* Grafik baþlýðý */
+    .admin-glass-card h5 {
+        margin-bottom: 18px;
+        color: #ff6a6a;
+        font-weight: 600;
+    }
+
+    /* Canvas kapsayýcý davranýþý */
+    .admin-glass-card canvas {
+        width: 100% !important;
+        height: 300px !important; /*  grafik yüksekliði */
+        max-height: 300px;
+    }
+
+/* Alt grafik (eðitmen baþýna öðrenci) daha geniþ olsun */
+.col-md-12 .admin-glass-card canvas {
+    height: 360px !important;
+    max-height: 360px;
+}
+
+/* Küçük ekranlarda daha kompakt */
+@media (max-width: 768px) {
+
+    .admin-glass-card {
+        min-height: 360px;
+    }
+
+        .admin-glass-card canvas {
+            height: 260px !important;
+            max-height: 260px;
+        }
+
+    .col-md-12 .admin-glass-card canvas {
+        height: 300px !important;
+    }
+}

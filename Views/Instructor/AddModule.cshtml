@@ -8,6 +8,9 @@
 
     <form asp-action="AddModule" method="post">
 
+        <!--  COURSE ID GİZLİ ALAN -->
+        <input type="hidden" asp-for="CourseId" value="@ViewBag.CourseId" />
+
         <label>Modül Başlığı</label>
         <input asp-for="Title" placeholder="Örn: Giriş ve Kurulum" />
 

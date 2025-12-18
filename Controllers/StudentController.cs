@@ -57,15 +57,53 @@ namespace Eylul_Webproje.Controllers
 
 
         // ------------------ LIST ALL COURSES ------------------
-        public async Task<IActionResult> Courses()
+        public async Task<IActionResult> Courses(
+     string search,
+     string category,
+     string instructor)
         {
-            var courses = await _context.Courses
+            var query = _context.Courses
                 .Include(c => c.Instructor)
                 .ThenInclude(i => i.User)
+                .AsQueryable();
+
+            //  Başlığa göre ara
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(c => c.Title.Contains(search));
+            }
+
+            //  Kategori filtre
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                query = query.Where(c => c.Category == category);
+            }
+
+            //  Eğitmen filtre
+            if (!string.IsNullOrWhiteSpace(instructor))
+            {
+                query = query.Where(c =>
+                    c.Instructor.User.Email.Contains(instructor));
+            }
+
+            // Dropdownlar için veriler
+            ViewBag.Categories = await _context.Courses
+                .Select(c => c.Category)
+                .Distinct()
                 .ToListAsync();
 
-            return View(courses);
+            ViewBag.Instructors = await _context.Instructors
+                .Include(i => i.User)
+                .Select(i => i.User.Email)
+                .ToListAsync();
+
+            ViewBag.Search = search;
+            ViewBag.SelectedCategory = category;
+            ViewBag.SelectedInstructor = instructor;
+
+            return View(await query.ToListAsync());
         }
+
 
 
         // ------------------ COURSE DETAIL ------------------

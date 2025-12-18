@@ -7,6 +7,44 @@
 
 <h2 class="text-light mb-4">Tüm Kurslar</h2>
 
+<!--  FİLTRE ALANI -->
+<form method="get" class="search-bar mb-4">
+
+    <input type="text"
+           name="search"
+           value="@ViewBag.Search"
+           class="search-input"
+           placeholder="Kurs ara..." />
+
+    <select name="category" class="search-input">
+        <option value="">Tüm Kategoriler</option>
+        @foreach (var cat in ViewBag.Categories as List<string>)
+        {
+            <option value="@cat"
+                    selected="@(cat == ViewBag.SelectedCategory)">
+                @cat
+            </option>
+        }
+    </select>
+
+    <select name="instructor" class="search-input">
+        <option value="">Tüm Eğitmenler</option>
+        @foreach (var inst in ViewBag.Instructors as List<string>)
+        {
+            <option value="@inst"
+                    selected="@(inst == ViewBag.SelectedInstructor)">
+                @inst
+            </option>
+        }
+    </select>
+
+    <button type="submit" class="search-btn">
+        🔍 Filtrele
+    </button>
+
+</form>
+
+<!-- 📚 KURSLAR -->
 <div class="row">
     @foreach (var course in Model)
     {
@@ -14,32 +52,40 @@
             <div class="card course-card shadow-lg">
 
                 <!-- Course Image -->
-                <img src="https://picsum.photos/600/400?random=@course.Id" class="course-img" />
+                <img src="https://picsum.photos/600/400?random=@course.Id"
+                     class="course-img" />
 
                 <div class="card-body">
                     <!-- Başlık -->
                     <h4 class="card-title">@course.Title</h4>
 
                     <!-- Açıklama -->
-                    <p class="course-description">@course.Description</p>
+                    <p class="course-description">
+                        @course.Description
+                    </p>
 
                     <!-- Kategori -->
-                    <p class="course-category">@course.Category</p>
+                    <p class="course-category">
+                        @course.Category
+                    </p>
 
-                    <!-- Eğitmen Bilgisi -->
+                    <!-- Eğitmen -->
                     <p class="text-info" style="font-size:14px;">
-                        <strong>Eğitmen:</strong> @course.Instructor?.User?.Email
+                        <strong>Eğitmen:</strong>
+                        @course.Instructor?.User?.Email
                     </p>
 
                     <!-- Butonlar -->
-                    <div class="mt-3">
-                        <a asp-action="CourseDetail" asp-route-id="@course.Id"
-                           class="btn btn-outline-info btn-sm">
+                    <div class="mt-3 d-flex gap-2">
+                        <a asp-action="CourseDetail"
+                           asp-route-id="@course.Id"
+                           class="btn btn-outline-info btn-sm w-50">
                             Görüntüle
                         </a>
 
-                        <a asp-action="Enroll" asp-route-id="@course.Id"
-                           class="btn btn-primary btn-sm ms-2">
+                        <a asp-action="Enroll"
+                           asp-route-id="@course.Id"
+                           class="btn btn-primary btn-sm w-50">
                             Kursa Katıl
                         </a>
                     </div>
@@ -49,3 +95,10 @@
         </div>
     }
 </div>
+
+@if (!Model.Any())
+{
+    <p class="text-muted mt-4">
+        😔 Aradığınız kriterlere uygun kurs bulunamadı.
+    </p>
+}

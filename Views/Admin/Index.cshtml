@@ -1,12 +1,44 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
+
+    var topCourses = ViewBag.TopCourses ?? new List<dynamic>();
+    var categoryStats = ViewBag.CategoryStats ?? new List<dynamic>();
+    var instructorStats = ViewBag.InstructorStats ?? new List<dynamic>();
+
+    // CS1977 fix: Select ile dinamik tipler üzerinde doğrudan lambda kullanılamaz.
+    // Bunun yerine, verileri ayrı bir diziye aktar.
+    var categoryNames = new List<string>();
+    var categoryCourseCounts = new List<int>();
+    foreach (var x in categoryStats)
+    {
+        categoryNames.Add((string)x.CategoryName);
+        categoryCourseCounts.Add((int)x.CourseCount);
+    }
+
+    var topCourseTitles = new List<string>();
+    var topCourseStudentCounts = new List<int>();
+    foreach (var x in topCourses)
+    {
+        topCourseTitles.Add((string)x.CourseTitle);
+        topCourseStudentCounts.Add((int)x.StudentCount);
+    }
+
+    var instructorEmails = new List<string>();
+    var instructorStudentCounts = new List<int>();
+    foreach (var x in instructorStats)
+    {
+        instructorEmails.Add((string)x.InstructorEmail);
+        instructorStudentCounts.Add((int)x.StudentCount);
+    }
 }
 
-<h2 class="admin-dashboard-title mb-4">Admin Dashboard</h2>
+<h2 class="admin-dashboard-title mb-4">📊 Admin Dashboard</h2>
 
+<!-- =======================
+     İSTATİSTİK KARTLARI
+======================= -->
 <div class="row mb-5">
 
-    <!-- Toplam Kurs -->
     <div class="col-md-4 mb-4">
         <div class="admin-stat-card">
             <h5>Toplam Kurs</h5>
@@ -14,7 +46,6 @@
         </div>
     </div>
 
-    <!-- Toplam Öğrenci -->
     <div class="col-md-4 mb-4">
         <div class="admin-stat-card">
             <h5>Toplam Öğrenci</h5>
@@ -22,7 +53,6 @@
         </div>
     </div>
 
-    <!-- Toplam Eğitmen -->
     <div class="col-md-4 mb-4">
         <div class="admin-stat-card">
             <h5>Toplam Eğitmen</h5>
@@ -32,12 +62,13 @@
 
 </div>
 
-<!-- Yönetim Aksiyonları -->
-<div class="admin-actions">
-
+<!-- =======================
+     YÖNETİM BUTONLARI
+======================= -->
+<div class="admin-actions mb-5">
 
     <a asp-action="AllCourses" class="admin-action-card">
-        📚 Tüm Kursları Görüntüle
+        📚 Tüm Kursları Yönet
     </a>
 
     <a asp-action="Users" class="admin-action-card">
@@ -45,3 +76,97 @@
     </a>
 
 </div>
+
+<!-- =======================
+     GRAFİKSEL RAPORLAMA
+======================= -->
+<h3 class="section-title mb-4">📈 Grafiksel Raporlama</h3>
+
+<div class="row g-4">
+
+    <!-- En Çok Kayıt Alan Kurslar -->
+    <div class="col-md-6">
+        <div class="admin-glass-card">
+            <h5>📊 En Çok Kayıt Alan Kurslar</h5>
+            <canvas id="topCoursesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Kategoriye Göre Kurs -->
+    <div class="col-md-6">
+        <div class="admin-glass-card">
+            <h5>📈 Kategoriye Göre Kurs Dağılımı</h5>
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Eğitmen Başına Öğrenci -->
+    <div class="col-md-12">
+        <div class="admin-glass-card">
+            <h5>👥 Eğitmen Başına Öğrenci Sayısı</h5>
+            <canvas id="instructorChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- =======================
+     CHART.JS
+======================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // ===== TOP COURSES =====
+    const topCoursesChart = new Chart(
+        document.getElementById('topCoursesChart'),
+        {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(topCourseTitles)),
+                datasets: [{
+                    label: 'Öğrenci Sayısı',
+                    data: @Html.Raw(Json.Serialize(topCourseStudentCounts)),
+                    backgroundColor: '#ff4d4d'
+                }]
+            }
+        }
+    );
+
+    // ===== CATEGORY DISTRIBUTION =====
+    const categoryChart = new Chart(
+        document.getElementById('categoryChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(categoryNames)),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(categoryCourseCounts)),
+                    backgroundColor: [
+                        '#ff4d4d',
+                        '#4aa3ff',
+                        '#ffd966',
+                        '#7ed957',
+                        '#c77dff',
+                        '#ffa94d'
+                    ]
+                }]
+            }
+        }
+    );
+
+    // ===== INSTRUCTOR STATS =====
+    const instructorChart = new Chart(
+        document.getElementById('instructorChart'),
+        {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(instructorEmails)),
+                datasets: [{
+                    label: 'Öğrenci Sayısı',
+                    data: @Html.Raw(Json.Serialize(instructorStudentCounts)),
+                    backgroundColor: '#4aa3ff'
+                }]  
+            }
+        }
+    );
+</script>
