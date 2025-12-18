@@ -5,7 +5,6 @@
 
 @if (!Model.Any())
 {
-    <!-- 👇 BURAYA -->
     <div class="empty-state text-center mt-5">
         <h4>📭 Henüz hiç kursun yok</h4>
         <p>İlk kursunu oluşturarak öğrencilerle buluş</p>
@@ -17,7 +16,6 @@
 }
 else
 {
-    <!-- 👇 KURSLAR VARSA -->
     <div class="row">
         @foreach (var course in Model)
         {
@@ -31,22 +29,44 @@ else
                         <h5 class="card-title">@course.Title</h5>
                         <p class="course-description">@course.Description</p>
 
-                        <div class="course-buttons">
-                            <a asp-action="AddModule"
-                               asp-route-courseId="@course.Id"
-                               class="btn btn-outline-info btn-sm">
-                                ➕ Modül Ekle
+
+                            <a asp-action="EditCourse"
+                               asp-route-id="@course.Id"
+                               class="btn btn-outline-primary btn-sm">
+                                ✏️ Düzenle
                             </a>
                         </div>
-                        <a asp-action="CourseStudents"
-                           asp-route-courseId="@course.Id"
-                           class="btn btn-outline-warning btn-sm">
-                            👥 Öğrencileri Gör
-                        </a>
+
+                        <!-- 2. SATIR: MODÜL + ÖĞRENCİ -->
+                        <div class="course-buttons mb-2">
+                            <a asp-action="AddModule"
+                               asp-route-courseId="@course.Id"
+                               class="btn btn-outline-success btn-sm">
+                                ➕ Modül Ekle
+                            </a>
+
+                            <a asp-action="CourseStudents"
+                               asp-route-courseId="@course.Id"
+                               class="btn btn-outline-warning btn-sm">
+                                👥 Öğrenciler
+                            </a>
+                        </div>
+
+                        <form asp-action="DeleteCourse"
+                              asp-route-id="@course.Id"
+                              method="post"
+                              onsubmit="return confirm('Bu kursu silmek istediğine emin misin?');">
+
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm w-100">
+                                🗑 Kursu Sil
+                            </button>
+                        </form>
+
                     </div>
 
                 </div>
-            </div>
+            
         }
     </div>
 }

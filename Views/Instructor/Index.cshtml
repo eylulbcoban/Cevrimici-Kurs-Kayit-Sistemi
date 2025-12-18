@@ -18,6 +18,15 @@
 
 </div>
 
+<div class="admin-actions mb-5">
+
+    <a asp-action="MyCourses" class="admin-action-card">
+        📚 Kurslarıma Git
+    </a>
+</div>
+
+<hr />
+
 <h4 class="section-title">📌 Son Eklenen Kurslar</h4>
 
 @if (((List<Course>)ViewBag.RecentCourses).Any())

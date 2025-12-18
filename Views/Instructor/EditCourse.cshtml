@@ -1,0 +1,31 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Kursu Düzenle";
+}
+
+<div class="form-card">
+    <h2>✏️ Kursu Düzenle</h2>
+
+    <form asp-action="EditCourse" method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <label>Kurs Başlığı</label>
+        <input asp-for="Title" />
+
+        <label>Açıklama</label>
+        <textarea asp-for="Description" rows="4"></textarea>
+
+        <label>Kategori</label>
+        <input asp-for="Category" />
+
+        <button type="submit" class="btn-form w-100">
+            💾 Kaydet
+        </button>
+    </form>
+
+    <a asp-action="MyCourses" class="back-link">
+        ← Kurslara Dön
+    </a>
+</div>

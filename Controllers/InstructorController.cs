@@ -144,6 +144,61 @@ namespace Eylul_Webproje.Controllers
             return RedirectToAction("MyCourses");
         }
 
-        
+        public async Task<IActionResult> CourseDetail(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
+
+            var course = await _context.Courses
+                .Include(c => c.Modules)
+                .FirstOrDefaultAsync(c =>
+                    c.Id == id &&
+                    c.InstructorId == instructor.Id);
+
+            if (course == null)
+                return NotFound();
+
+            return View(course);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditCourse(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c =>
+                    c.Id == id &&
+                    c.InstructorId == instructor.Id);
+
+            if (course == null)
+                return NotFound();
+
+            return View(course);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var instructor = await _context.Instructors
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
+
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c =>
+                    c.Id == id &&
+                    c.InstructorId == instructor.Id);
+
+            if (course == null)
+                return NotFound();
+
+            _context.Courses.Remove(course);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("MyCourses");
+        }
     }
 }

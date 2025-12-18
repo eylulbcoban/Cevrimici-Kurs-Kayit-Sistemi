@@ -1,0 +1,33 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Kursu Sil";
+}
+
+<div class="form-card text-center">
+
+    <h2 class="text-danger mb-3">🗑️ Kursu Sil</h2>
+
+    <p class="text-light">
+        <strong>@Model.Title</strong> adlı kursu silmek üzeresin.
+    </p>
+
+    <p class="text-muted">
+        Bu işlem <b>geri alınamaz</b>.<br />
+        Kursa ait tüm modüller ve kayıtlar da silinir.
+    </p>
+
+    <form asp-action="DeleteCourseConfirmed" method="post" class="mt-4">
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger w-100 mb-2">
+            ❌ Evet, Kursu Sil
+        </button>
+
+        <a asp-action="MyCourses" class="back-link">
+            ← Vazgeç
+        </a>
+    </form>
+
+</div>

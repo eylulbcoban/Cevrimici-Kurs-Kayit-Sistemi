@@ -1055,3 +1055,26 @@ body {
         height: 300px !important;
     }
 }
+
+.section-title{
+    color:azure;
+}
+
+/* EÐÝTMEN CRUD*/
+.course-actions {
+    margin-top: 15px;
+}
+
+    .course-actions .btn {
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    .course-actions .btn-danger {
+        background: linear-gradient(135deg, #ff4d4d, #d63031);
+        border: none;
+    }
+
+        .course-actions .btn-danger:hover {
+            opacity: 0.9;
+        }
