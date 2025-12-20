@@ -83,11 +83,17 @@
                             Görüntüle
                         </a>
 
-                        <a asp-action="Enroll"
-                           asp-route-id="@course.Id"
-                           class="btn btn-primary btn-sm w-50">
-                            Kursa Katıl
-                        </a>
+                        <form asp-action="Enroll"
+                              asp-route-id="@course.Id"
+                              method="post"
+                              onsubmit="return confirmEnroll();">
+
+                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">
+                                Kursa Katıl
+                            </button>
+
+                        </form>
+
                     </div>
 
                 </div>
@@ -102,3 +108,9 @@
         😔 Aradığınız kriterlere uygun kurs bulunamadı.
     </p>
 }
+
+<script>
+    function confirmEnroll() {
+        return confirm("Bu kursa kayıt olmak istediğinize emin misiniz?");
+    }
+</script>
