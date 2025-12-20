@@ -1026,6 +1026,13 @@ body {
         font-weight: 600;
     }
 
+    .admin-glass-card p {
+        color: #f1f1f1; /* açýk beyaz */
+        font-size: 15px;
+        line-height: 1.6;
+        opacity: 1; /* SÝLÝKLÝK BÝTTÝ */
+    }
+
     /* Canvas kapsayýcý davranýþý */
     .admin-glass-card canvas {
         width: 100% !important;
@@ -1044,6 +1051,8 @@ body {
 
     .admin-glass-card {
         min-height: 360px;
+        color: #f1f1f1; /* açýk beyaz */
+        
     }
 
         .admin-glass-card canvas {
@@ -1219,4 +1228,28 @@ body {
     padding-top: 20px;
     margin-top: 40px;
     font-size: 0.9rem;
+}
+
+.lesson-note-card {
+    background: rgba(20, 25, 60, 0.95);
+    border: 1px solid rgba(255, 77, 77, 0.4);
+    border-radius: 14px;
+    padding: 24px;
+}
+
+    .lesson-note-card h4 {
+        color: #ff5c5c;
+        margin-bottom: 12px;
+    }
+
+.lesson-note-textarea {
+    width: 100%;
+    background: #0f1333;
+    color: #ffffff;
+    border: 1px solid #3a3f8f;
+    border-radius: 10px;
+    padding: 14px;
+    resize: vertical;
+    font-size: 15px;
+    line-height: 1.5;
 }

@@ -56,6 +56,38 @@ namespace Eylul_Webproje.Controllers
         }
 
 
+        // ================== DERSE GİR ==================
+        public async Task<IActionResult> Ders(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            var student = await _context.Students
+                .FirstOrDefaultAsync(s => s.UserId == user.Id);
+
+            if (student == null)
+                return RedirectToAction("MyCourses");
+
+            // öğrencinin gerçekten kayıtlı olduğu kurs mu?
+            var enrollment = await _context.Enrollments
+                .Include(e => e.Course)
+                    .ThenInclude(c => c.Modules)
+                .Include(e => e.Course)
+                    .ThenInclude(c => c.Instructor)
+                        .ThenInclude(i => i.User)
+                .FirstOrDefaultAsync(e =>
+                    e.CourseId == id &&
+                    e.StudentId == student.Id);
+
+            if (enrollment == null)
+                return RedirectToAction("MyCourses");
+
+            return View(enrollment.Course);
+        }
+
+
+
         // ------------------ LIST ALL COURSES ------------------
         public async Task<IActionResult> Courses(
      string search,

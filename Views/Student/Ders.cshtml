@@ -1,0 +1,83 @@
+﻿@model Course
+
+<h2 class="page-title">📘 @Model.Title</h2>
+
+<p class="course-description mb-3">
+    @Model.Description
+</p>
+
+<p class="course-category">
+    <strong>Kategori:</strong> @Model.Category
+</p>
+
+<p class="course-instructor">
+    👨‍🏫 Eğitmen: @Model.Instructor?.User?.Email
+</p>
+
+<hr class="my-4" />
+
+<div class="lesson-note-card mt-5">
+    <h4>📝 Ders Notlarım</h4>
+
+    <textarea id="lessonNote"
+              rows="6"
+              class="lesson-note-textarea"
+              placeholder="Bu dersle ilgili notlarını buraya yaz...">
+    </textarea>
+
+    <button onclick="saveNote()" class="btn btn-primary mt-3">
+        💾 Notu Kaydet
+    </button>
+</div>
+
+<hr class="my-4" />
+
+<h4 class="section-title">📚 Ders Modülleri</h4>
+
+@if (Model.Modules == null || !Model.Modules.Any())
+{
+    <div class="empty-state mt-4">
+        <p>📭 Bu kursa henüz modül eklenmemiş.</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var module in Model.Modules)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="admin-glass-card">
+                    <h5>📌 @module.Title</h5>
+                    <p class="mt-2">@module.Content</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+<a asp-action="MyCourses"
+   class="back-link mt-4 d-inline-block">
+    ← Kurslarıma Dön
+</a>
+
+<script>
+    const courseId = "@Model.Id";
+    const storageKey = "lesson_note_" + courseId;
+
+    // Sayfa açılınca notu yükle
+    window.onload = function () {
+        const savedNote = localStorage.getItem(storageKey);
+        if (savedNote) {
+            document.getElementById("lessonNote").value = savedNote;
+        }
+    };
+
+    // Notu kaydet
+    function saveNote() {
+        const note = document.getElementById("lessonNote").value;
+        localStorage.setItem(storageKey, note);
+
+        alert("✅ Notun kaydedildi!");
+    }
+</script>
