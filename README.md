@@ -1,6 +1,6 @@
 Çevrimiçi Kurs Kayıt Sistemi
 
-Bu proje, ASP.NET Core MVC*kullanılarak geliştirilmiş bir
+Bu proje, ASP.NET Core MVC kullanılarak geliştirilmiş bir
 Çevrimiçi Kurs Kayıt ve Yönetim Sistemidir.
 
 Özgünlük & Bonus Özellikler
